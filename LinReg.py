@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 
-filepath = 'C:\DataAnalytics\dataframe.xlsx'
+filepath = 'dataframe.xlsx'
 dataframe = pd.read_excel(filepath)
 dataframe['z1'] = dataframe['x1'] / 1000
 dataframe['z2'] = dataframe['z1'] * dataframe['x2']
