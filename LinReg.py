@@ -1,8 +1,10 @@
 import numpy as np
 import pandas as pd
 import scipy.stats as stats
+from scipy.stats import norm
 import seaborn as sns
 import matplotlib.pyplot as plt
+from math import sqrt
 
 filename = 'dataframe'
 filepath = filename + '.xlsx'
@@ -113,6 +115,45 @@ for i in range(0, k):
     TS = beta[i] / stdErr
     print("Beta{} = {}; Standard error: {}, TS: {}, 95% confidence intervall: {}".format(i, beta[i], stdErr, TS, confidance(beta[i], stdErr, n - k - 1)))
 
+
+dataframe['dev'] = dataframe['y'] - dataframe["mu"]
+
+n = dataframe['dev'].size - 1
+
+s = 0
+for value in dataframe['dev'].to_list():
+    s += value**2
+
+sampleVarience = s/n
+
+sampleVarience = sqrt(sampleVarience)
+print(f"sampleVarience: {sampleVarience}")
+
+plt.figure()
+plt.scatter(dataframe['z1'], dataframe['dev'], color='blue', label=f'Deviation vs z1')
+plt.ylabel("Deviation")
+plt.xlabel("$z_1$")
+plt.legend()
+
+plt.figure()
+plt.hist(dataframe['dev'], 10, (-25, 25), density=True)
+# x-axis ranges from -3 and 3 with .001 steps
+x = np.linspace(-25, 25, 1000)
+
+# plot normal distribution with mean 0 and standard deviation 1
+plt.plot(x, norm.pdf(x, 0, sampleVarience))
+
+plt.figure()
+
+# Create histogram
+n, bins, patches = plt.hist(dataframe['dev'], 10, (-25, 25))
+
+# Annotate each bin with the number of elements
+for i in range(len(n)):
+    plt.text(bins[i], n[i], str(int(n[i])), ha='center', va='bottom')
+
+
+plt.show()
 
 with pd.ExcelWriter(filename + 'Result.xlsx', engine='xlsxwriter') as writer:
     dataframe.to_excel(writer, sheet_name='Result', index=False)
