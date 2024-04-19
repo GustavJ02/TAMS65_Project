@@ -5,6 +5,7 @@ from scipy.stats import norm
 import seaborn as sns
 import matplotlib.pyplot as plt
 from math import sqrt
+import statsmodels.graphics.gofplots as sm
 
 filename = 'dataframe'
 filepath = filename + '.xlsx'
@@ -29,7 +30,7 @@ ax.set_zlabel('y')
 ax.set_title('3D Scatter Plot')
 
 # Show plot
-plt.show()
+#plt.show()
 
 correlation_matrix = dataframe.corr()
 plt.figure(figsize=(10, 8))
@@ -45,7 +46,7 @@ for column_title in explanatoryVariables.columns:
     plt.xlabel(column_title)
     plt.legend()
 
-plt.show()
+#plt.show()
 
 # Observed z-values and y values
 Z = np.array(explanatoryVariables)
@@ -118,13 +119,13 @@ for i in range(0, k):
 
 dataframe['dev'] = dataframe['y'] - dataframe["mu"]
 
-n = dataframe['dev'].size - 1
+n = dataframe['dev'].size
 
 s = 0
 for value in dataframe['dev'].to_list():
     s += value**2
 
-sampleVarience = s/n
+sampleVarience = s/(n - 1)
 
 sampleVarience = sqrt(sampleVarience)
 print(f"sampleVarience: {sampleVarience}")
@@ -153,7 +154,17 @@ for i in range(len(n)):
     plt.text(bins[i], n[i], str(int(n[i])), ha='center', va='bottom')
 
 
-plt.show()
+plt.figure()
+plt.scatter(dataframe['mu'], dataframe['dev'], color='blue', label=f'Deviation vs mu')
+plt.ylabel("Deviation")
+plt.xlabel("mu")
+plt.legend()
+
+plt.figure()
+sm.ProbPlot(dataframe['dev']).qqplot(line='s')
+
 
 with pd.ExcelWriter(filename + 'Result.xlsx', engine='xlsxwriter') as writer:
     dataframe.to_excel(writer, sheet_name='Result', index=False)
+
+plt.show()
