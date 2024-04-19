@@ -13,6 +13,22 @@ dataframe['z2'] = dataframe['z1'] * dataframe['x2']
 explanatoryVariables = dataframe[['z1', 'z2']]
 resultVariable = dataframe['y']
 
+# Creating 3D scatter plot
+fig = plt.figure(figsize=(10, 8))
+ax = fig.add_subplot(111, projection='3d')
+
+# Scatter plot
+ax.scatter(explanatoryVariables['z1'], explanatoryVariables['z2'], resultVariable, c='r', marker='o')
+
+# Setting labels and title
+ax.set_xlabel('z1')
+ax.set_ylabel('z2')
+ax.set_zlabel('y')
+ax.set_title('3D Scatter Plot')
+
+# Show plot
+plt.show()
+
 correlation_matrix = dataframe.corr()
 plt.figure(figsize=(10, 8))
 cmap = sns.diverging_palette(10, 133, as_cmap=True)
@@ -21,7 +37,7 @@ plt.title("Correlation Matrix Heatmap")
 
 for column_title in explanatoryVariables.columns:
     plt.figure()
-    plt.scatter(dataframe[column_title], resultVariable, color='blue', label=f'SQM price vs {column_title}')
+    plt.scatter(dataframe[column_title], resultVariable, color='blue', label=f'# working hours lost vs {column_title}')
     plt.title(f'Scatter Plot of {column_title}')
     plt.ylabel(resultVariable.name)
     plt.xlabel(column_title)
