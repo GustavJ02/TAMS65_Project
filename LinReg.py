@@ -30,7 +30,7 @@ ax.set_zlabel('y')
 ax.set_title('3D Scatter Plot')
 
 # Show plot
-#plt.show()
+# plt.show()
 
 correlation_matrix = dataframe.corr()
 plt.figure(figsize=(10, 8))
@@ -46,7 +46,7 @@ for column_title in explanatoryVariables.columns:
     plt.xlabel(column_title)
     plt.legend()
 
-#plt.show()
+# plt.show()
 
 # Observed z-values and y values
 Z = np.array(explanatoryVariables)
